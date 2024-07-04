@@ -1,10 +1,9 @@
-import {Component, effect, inject, Signal} from '@angular/core';
+import {Component, inject, Signal} from '@angular/core';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {map} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {Product} from '../product.model';
 import {ProductService} from '../product.service';
-import {WorkbenchView} from '@scion/workbench';
 
 @Component({
   selector: 'app-product-detail',
@@ -19,14 +18,12 @@ export class ProductDetailComponent {
 
   protected product: Signal<Product>;
 
-  constructor(route: ActivatedRoute, view: WorkbenchView) {
+  constructor(route: ActivatedRoute) {
     this.product = toSignal(route.paramMap
       .pipe(
         map(params => params.get('id')!),
         map(id => this.productService.getProduct(id)!),
         takeUntilDestroyed(),
       ), {requireSync: true});
-
-    view.title = this.product().name;
   }
 }

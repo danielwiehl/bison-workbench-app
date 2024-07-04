@@ -1,9 +1,8 @@
 import {Component, inject} from '@angular/core';
-import {WorkbenchRouter, WorkbenchView} from '@scion/workbench';
 import {Order} from '../order.model';
 import {OrderService} from '../order.service';
 import {OrderListItemComponent} from './order-list-item/order-list-item.component';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-order-list',
@@ -18,14 +17,13 @@ import {RouterLink} from '@angular/router';
 export class OrderListComponent {
 
   protected orders: Order[];
-  private workbenchRouter = inject(WorkbenchRouter);
+  private router = inject(Router);
 
-  constructor(view: WorkbenchView, orderService: OrderService) {
-    view.title = 'Open Orders';
+  constructor(orderService: OrderService) {
     this.orders = orderService.getOrders();
   }
 
   protected onOpenOrder(id: string): void {
-    this.workbenchRouter.navigate(['orders', id])
+    this.router.navigate(['orders', id])
   }
 }
